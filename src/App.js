@@ -6,6 +6,15 @@ function App() {
   const [Vertical,setVertical] = useState(10);
   const [Blur,setBlur] = useState(10);
   const [Color,setColor] = useState("#808080");
+  const [copySuccess, setCopySuccess] = useState('');
+  const textAreaRef = useRef(null);
+  function copyToClipboard(e) {
+    textAreaRef.current.select();
+    document.execCommand('copy');
+    e.target.focus();
+    setCopySuccess('Copied!');
+  };
+  
   return (
     <div className="App">
     <h1 style={{textAlign:"center", marginBottom:"100px"}}>Set boxShadow</h1>
@@ -19,6 +28,16 @@ function App() {
         <input type="range" min="0" max="100" value={Blur} onChange = {(e) =>{setBlur(e.target.value)} }/>
         <label>Color</label>
         <input type="color" value={Color} onChange = {(e) =>{setColor(e.target.value)} }/>
+        <form>
+         <textarea
+           ref={textAreaRef}
+           value={"boxShadow: "+Horizontal + "px " + Vertical + "px " + Blur + "px "+ Color}
+        />
+      </form>
+        <div>
+           <button onClick={copyToClipboard}>Copy</button> 
+           {copySuccess}
+        </div>
       </div>
       <div className="output">
         <div className="container" style={{boxShadow:`${Horizontal}px ${Vertical}px ${Blur}px ${Color}` }}>
